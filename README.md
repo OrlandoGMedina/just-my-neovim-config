@@ -3,7 +3,19 @@
 > Thanks to jdhao for thier work... this neovim config was forked from his github account
 
 <p align="center">
-<img src="images/demo_look.jpg" width="600">
+<img src="images/demo_look.png" width="600">
+</p>
+
+<p align="center">
+<img src="images/demo_look1.png" width="600">
+</p>
+
+<p align="center">
+<img src="images/demo_look3.png" width="600">
+</p>
+
+<p align="center">
+<img src="images/demo_look4.png" width="600">
 </p>
 
 ## Introduction
@@ -92,4 +104,3 @@ configuring Vim on different platforms:
 - [Config nvim on Linux for Python development](https://jdhao.github.io/2018/12/24/centos_nvim_install_use_guide_en/)
 
 [^1]: Not enabled by default for Linux, see [this issue](https://github.com/jdhao/nvim-config/issues/4) on how to enable vimtex on Linux.
-
