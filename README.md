@@ -20,6 +20,8 @@
 
 ## Introduction
 
+(this is a project in progress)
+
 This is my Neovim configuration for my Arch Linux. `init.vim` is the config file for terminal Neovim,
 and `ginit.vim` is the additional config file for GUI client of Neovim.
 
