@@ -17,6 +17,7 @@ if empty(readdir(g:plug_home))
 endif
 "}}
 
+
 "{{ Autocompletion related plugins
 call plug#begin()
 " Auto-completion
@@ -30,6 +31,24 @@ if !executable('vim-language-server')
   " only use neco-vim when vim-language-server is not available
   Plug 'Shougo/neco-vim', { 'for': 'vim' }
 endif
+"}}
+"{{ File Management related plugins 
+" We'll install NERDTree for file exploring
+	" NERD Tree - tree explorer
+" https://github.com/scrooloose/nerdtree
+" http://usevim.com/2012/07/18/nerdtree/
+" (loaded on first invocation of the command)
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+" nerdtree-git-plugin - show git status in NERD Tree
+" https://github.com/Xuyuanp/nerdtree-git-plugin
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" Cool Icons pluging
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'ryanoasis/vim-devicons'
+" FZF plugins
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " Install fuzzy finder binary
+Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
+Plug 'junegunn/fzf.vim'  " Enable fuzzy finder in Vim
 "}}
 
 "{{ language-specific plugins
@@ -51,10 +70,30 @@ if executable('sbcl')
   Plug 'vlime/vlime', {'rtp': 'vim/', 'for': 'lisp'}
 endif
 
-" C++ semantic highlighting
+" C++ semantic highlighting/
 if executable('ccls')
   Plug 'jackguo380/vim-lsp-cxx-highlight'
 endif
+
+" JavaScript support
+" Confirmar si los siguientes plugins son mejores que los otros
+  " tern_for_vim
+  " deoplete-ternjs
+  " jspc.vim
+  " vim-jsbeautify
+ Plug 'pangloss/vim-javascript'   " javascript sintax
+
+" these two plugins will add highlighting and indenting to JSX and TSX files.
+Plug 'yuezk/vim-js'
+" if you want to highlight tsx files.
+Plug 'HerringtonDarkholme/yats.vim'
+" or Plug 'leafgarland/typescript-vim'    " typescript syntax
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'peitalin/vim-jsx-typescript'
+
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+
+Plug 'jparise/vim-graphql'
 "}}
 
 "{{ Search related plugins
@@ -100,6 +139,7 @@ Plug 'KeitaNakamura/neodark.vim'
 Plug 'sainnhe/edge'
 Plug 'sainnhe/sonokai'
 Plug 'sainnhe/gruvbox-material'
+Plug 'chriskempson/base16-vim'
 
 if !exists('g:started_by_firenvim')
   " colorful status line and theme
@@ -138,7 +178,7 @@ Plug 'honza/vim-snippets'
 
 " Automatic insertion and deletion of a pair of characters
 Plug 'jiangmiao/auto-pairs'
-
+ Plug 'alvan/vim-closetag'
 " Comment plugin
 Plug 'tpope/vim-commentary'
 
@@ -197,6 +237,8 @@ Plug 'mhinz/vim-signify'
 " Plug 'airblade/vim-gitgutter'
 
 " Git command inside vim
+" Excellent git wrapper
+" https://github.com/tpope/vim-fugitive
 Plug 'tpope/vim-fugitive'
 Plug 'APZelos/blamer.nvim'
 "}}
@@ -259,19 +301,21 @@ endif
 "{{ Tmux related plugins
 " Since tmux is only available on Linux and Mac, we only enable these plugins
 " for Linux and Mac
-if executable('tmux')
-  " Let vim detect tmux focus event correctly, see
-  " https://github.com/neovim/neovim/issues/9486 and
-  " https://vi.stackexchange.com/q/18515/15292
-  Plug 'tmux-plugins/vim-tmux-focus-events'
+" if executable('tmux')
+"  " Let vim detect tmux focus event correctly, see
+"  " https://github.com/neovim/neovim/issues/9486 and
+"  " https://vi.stackexchange.com/q/18515/15292
+  " Plug 'tmux-plugins/vim-tmux-focus-events'
 
-  " .tmux.conf syntax highlighting and setting check
-  Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
-endif
+"  " .tmux.conf syntax highlighting and setting check
+  " Plug 'tmux-plugins/vim-tmux', { 'for': 'tmux' }
+" endif
 "}}
 
 "{{ HTML related
 Plug 'mattn/emmet-vim', { 'for': ['markdown', 'javascript', 'css'] }
+" This plugin contributes to vim-polyglot language pack  <-- use with polyglot
+" Plug 'othree/html5.vim'
 "}}
 
 "{{ Misc plugins
@@ -307,6 +351,9 @@ Plug 'wgurecky/vimSum'
 if g:is_linux
   Plug 'ojroques/vim-oscyank'
 endif
+
+" foldable extensible 40-column cheat sheet 
+Plug 'lifepillar/vim-cheat40'
 call plug#end()
 "}}
 "}
@@ -374,7 +421,6 @@ let g:lsp_diagnostics_enabled = 1
 let g:lsp_diagnostics_signs_enabled = 1
 let g:lsp_diagnostics_signs_error = {'text': '✗'}
 let g:lsp_diagnostics_signs_warning = {'text': '!'}
-let g:lsp_diagnostics_signs_information = {'text': '!'}
 let g:lsp_diagnostics_highlights_enabled = 0
 
 " Do not use virtual text, they are far too obstrusive.
@@ -399,9 +445,8 @@ if executable('pyls')
           \ 'allowlist': ['python'],
           \ 'workspace_config': {
           \    'pyls':
-          \        {
-          \         'plugins': {'flake8': {'enabled': v:false},
-          \                     'pylint': {'enabled': v:true, 'executable': 'pylint'},
+          \        {'configurationSources': ['flake8'],
+          \         'plugins': {'flake8': {'enabled': v:true},
           \                     'pyflakes': {'enabled': v:false},
           \                     'pycodestyle': {'enabled': v:false},
           \                     'jedi_completion': {'fuzzy': v:true},
@@ -478,6 +523,97 @@ let g:UltiSnipsJumpBackwardTrigger='<c-k>'
 " Configuration for custom snippets directory, see
 " https://jdhao.github.io/2019/04/17/neovim_snippet_s1/ for details.
 let g:UltiSnipsSnippetDirectories=['UltiSnips', 'my_snippets']
+"}}
+
+
+"{{ File Management related plugins 
+" We'll configure NERDTree for file exploring
+" This is the default extra key bindings
+
+" Use Ctrl-k Ctrl-k to open a sidebar with the list of files
+map <C-k><C-k> :NERDTreeToggle<cr>
+" Toggle
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+" Use Ctrl-P to open the fuzzy file opener
+nnoremap <C-p> :Files<cr>
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_buffers_jump = 1
+
+" map <C-f> :Files<CR>
+" map <leader>b :Buffers<CR>
+" nnoremap <leader>g :Rg<CR>
+" nnoremap <leader>t :Tags<CR>
+" nnoremap <leader>m :Marks<CR>
+" let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
+" Automaticaly close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+let g:fzf_tags_command = 'ctags -R'
+" Border color
+let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
+
+let $FZF_DEFAULT_OPTS = '--layout=reverse --inline-info'
+let $FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/**'"
+"-g '!{node_modules,.git}'
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Get Files
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--inline-info']}), <bang>0)
+
+" Make Ripgrep ONLY search file contents and not filenames
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --hidden --smart-case --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
+  \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4.. -e'}, 'right:50%', '?'),
+  \   <bang>0)
+
+" Ripgrep advanced
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+" Git grep
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 "}}
 
 "{{ Language specific plugin
@@ -610,6 +746,15 @@ augroup vista_conf
 augroup END
 
 nnoremap <silent> <Space>t :<C-U>Vista!!<CR>
+
+function! Comment()
+  if (mode() == "n" )
+    execute "Commentary"
+  else    
+    execute "'<,'>Commentary"
+  endif
+ endfunction
+vnoremap <silent> <space>/ :call Comment()
 "}}
 
 "{{ File editting
@@ -782,78 +927,92 @@ nmap s <Nop>
 omap s <Nop>
 "}}
 
-"{{ LaTeX editting
-""""""""""""""""""""""""""""vimtex settings"""""""""""""""""""""""""""""
-if ( g:is_win || g:is_mac ) && executable('latex')
-  function! SetServerName() abort
-    if has('win32')
-      let nvim_server_file = $TEMP . '/curnvimserver.txt'
-    else
-      let nvim_server_file = '/tmp/curnvimserver.txt'
-    endif
-    let cmd = printf('echo %s > %s', v:servername, nvim_server_file)
-    call system(cmd)
-  endfunction
+""{{ LaTeX editting
+"""""""""""""""""""""""""""""vimtex settings"""""""""""""""""""""""""""""
+"if ( g:is_win || g:is_mac ) && executable('latex')
+"  function! SetServerName() abort
+"    if has('win32')
+"      let nvim_server_file = $TEMP . '/curnvimserver.txt'
+"    else
+"      let nvim_server_file = '/tmp/curnvimserver.txt'
+"    endif
+"    let cmd = printf('echo %s > %s', v:servername, nvim_server_file)
+"    call system(cmd)
+"  endfunction
 
-  augroup vimtex_common
-    autocmd!
-    autocmd FileType tex nmap <buffer> <F9> <plug>(vimtex-compile)
-    autocmd FileType tex call SetServerName()
-  augroup END
+"  augroup vimtex_common
+"    autocmd!
+"    autocmd FileType tex nmap <buffer> <F9> <plug>(vimtex-compile)
+"    autocmd FileType tex call SetServerName()
+"  augroup END
 
-  " Deoplete configurations for autocompletion to work
-  call deoplete#custom#var('omni', 'input_patterns', {
-        \ 'tex': g:vimtex#re#deoplete
-        \ })
+"  " Deoplete configurations for autocompletion to work
+"  call deoplete#custom#var('omni', 'input_patterns', {
+"        \ 'tex': g:vimtex#re#deoplete
+"        \ })
 
-  let g:vimtex_compiler_latexmk = {
-        \ 'build_dir' : 'build',
-        \ }
+"  let g:vimtex_compiler_latexmk = {
+"        \ 'build_dir' : 'build',
+"        \ }
 
-  " TOC settings
-  let g:vimtex_toc_config = {
-        \ 'name' : 'TOC',
-        \ 'layers' : ['content', 'todo', 'include'],
-        \ 'resize' : 1,
-        \ 'split_width' : 30,
-        \ 'todo_sorted' : 0,
-        \ 'show_help' : 1,
-        \ 'show_numbers' : 1,
-        \ 'mode' : 2,
-        \ }
+"  " TOC settings
+"  let g:vimtex_toc_config = {
+"        \ 'name' : 'TOC',
+"        \ 'layers' : ['content', 'todo', 'include'],
+"        \ 'resize' : 1,
+"        \ 'split_width' : 30,
+"        \ 'todo_sorted' : 0,
+"        \ 'show_help' : 1,
+"        \ 'show_numbers' : 1,
+"        \ 'mode' : 2,
+"        \ }
 
-  " Viewer settings for different platforms
-  if g:is_win
-    let g:vimtex_view_general_viewer = 'SumatraPDF'
-    let g:vimtex_view_general_options_latexmk = '-reuse-instance'
-    let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
-  endif
+"  " Viewer settings for different platforms
+"  if g:is_win
+"    let g:vimtex_view_general_viewer = 'SumatraPDF'
+"    let g:vimtex_view_general_options_latexmk = '-reuse-instance'
+"    let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
+"  endif
 
-  if g:is_mac
-    " let g:vimtex_view_method = "skim"
-    let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
-    let g:vimtex_view_general_options = '-r @line @pdf @tex'
+"  if g:is_mac
+"    " let g:vimtex_view_method = "skim"
+"    let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+"    let g:vimtex_view_general_options = '-r @line @pdf @tex'
 
-    augroup vimtex_mac
-      autocmd!
-      autocmd User VimtexEventCompileSuccess call UpdateSkim()
-    augroup END
+"    augroup vimtex_mac
+"      autocmd!
+"      autocmd User VimtexEventCompileSuccess call UpdateSkim()
+"    augroup END
 
-    " The following code is adapted from https://gist.github.com/skulumani/7ea00478c63193a832a6d3f2e661a536.
-    function! UpdateSkim() abort
-      let l:out = b:vimtex.out()
-      let l:src_file_path = expand('%:p')
-      let l:cmd = [g:vimtex_view_general_viewer, '-r']
+"    " The following code is adapted from https://gist.github.com/skulumani/7ea00478c63193a832a6d3f2e661a536.
+"    function! UpdateSkim() abort
+"      let l:out = b:vimtex.out()
+"      let l:src_file_path = expand('%:p')
+"      let l:cmd = [g:vimtex_view_general_viewer, '-r']
 
-      if !empty(system('pgrep Skim'))
-        call extend(l:cmd, ['-g'])
-      endif
+"      if !empty(system('pgrep Skim'))
+"        call extend(l:cmd, ['-g'])
+"      endif
 
-      call jobstart(l:cmd + [line('.'), l:out, l:src_file_path])
-    endfunction
-  endif
-endif
-"}}
+"      call jobstart(l:cmd + [line('.'), l:out, l:src_file_path])
+"    endfunction
+"  endif
+"endif
+""}}
+
+
+"{{ HTML(5) settings
+" Configure
+" Disable event-handler attributes support:
+" let g:html5_event_handler_attributes_complete = 0
+" Disable RDFa attributes support:
+" let g:html5_rdfa_attributes_complete = 0
+" Disable microdata attributes support:
+" let g:html5_microdata_attributes_complete = 0
+" Disable WAI-ARIA attribute support:
+" let g:html5_aria_attributes_complete = 0
+
+""}}
 
 "{{ UI: Status line, look
 """""""""""""""""""""""""""vim-airline setting""""""""""""""""""""""""""""""

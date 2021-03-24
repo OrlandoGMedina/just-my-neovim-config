@@ -2,8 +2,11 @@
 "{{ General settings about colors
 " Enable true colors support. Do not set this option if your terminal does not
 " support true colors! For a comprehensive list of terminals supporting true
-" colors, see https://github.com/termstandard/colors and https://gist.github.com/XVilka/8346728.
-set termguicolors
+" colors, see https://github.com/termstandard/colors and
+" https://gist.github.com/XVilka/8346728.
+if match($TERM, '^xterm.*') != -1 || exists('g:started_by_firenvim')
+  set termguicolors
+endif
 "}}
 
 "{{ Colorscheme settings

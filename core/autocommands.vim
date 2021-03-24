@@ -98,3 +98,39 @@ function! s:quit_current_win() abort
   endif
 endfunction
 "}
+
+
+"{ Ohter Auto Commands
+" Enable wrap on Markdown and Text files
+if !exists('*s:setupWrapping')
+  function s:setupWrapping()
+    setlocal wrap
+    setlocal noshowmatch
+    nnoremap <buffer> j gj
+    nnoremap <buffer> k gk
+  endfunction
+endif
+augroup vimrc-enable-wrap-on-text-files
+  autocmd!
+  autocmd BufRead,BufNewFile *.txt,*.md call s:setupWrapping()
+augroup END
+
+" Auto command to remember last editing position
+augroup vimrc-remember-cursor-position
+  autocmd!
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+augroup END
+
+" Install vim-plug
+"if empty(glob('~/.vim/autoload/plug.vim'))
+"  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+"endif
+
+" fron Chris
+" Turn spellcheck on for markdown files
+augroup auto_spellcheck
+  autocmd BufNewFile,BufRead *.md setlocal spell
+augroup END
+
+"}

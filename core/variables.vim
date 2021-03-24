@@ -26,6 +26,8 @@ endif
 
 " Custom mapping <leader> (see `:h mapleader` for more info)
 let mapleader = ','
+" let g:mapleader = "\<Space>"
+let g:maplocalleader = ','
 "}}
 
 "{{ Disable loading certain plugins
@@ -47,7 +49,8 @@ let g:loaded_zipPlugin = 1
 let loaded_gzip = 1
 let g:loaded_tarPlugin = 1
 
-let g:loaded_tutor_mode_plugin = 1  " do not load the tutor plugin
+" let g:loaded_tutor_mode_plugin = 1  " do not load the tutor plugin
+let g:loaded_tutor_mode_plugin = 0  " load the tutor plugin
 
 " Do not use builtin matchit.vim and matchparen.vim since we use vim-matchup
 let g:loaded_matchit = 1
