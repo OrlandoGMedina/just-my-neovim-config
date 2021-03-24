@@ -1,0 +1,1 @@
+# just-my-neovim-config
