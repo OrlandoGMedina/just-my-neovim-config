@@ -8,6 +8,9 @@ xnoremap ; :
 " Quicker way to open command window
 nnoremap q; q:
 
+" Quicker <Esc> in insert mode
+inoremap <silent> jk <Esc>
+
 " Turn the word under cursor to upper case
 inoremap <c-u> <Esc>viwUea
 
@@ -198,4 +201,9 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+
+nnoremap <up> :echoerr "Don't use arrow keys, use H, J, K, L instead!"<CR>
+nnoremap <down> :echoerr "Don't use arrow keys, use H, J, K, L instead!"<CR>
+nnoremap <right> :echoerr "Don't use arrow keys, use H, J, K, L instead!"<CR>
+nnoremap <left> :echoerr "Don't use arrow keys, use H, J, K, L instead!"<CR>
 "}
