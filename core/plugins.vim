@@ -32,7 +32,7 @@ if !executable('vim-language-server')
   Plug 'Shougo/neco-vim', { 'for': 'vim' }
 endif
 "}}
-"{{ File Management related plugins 
+"{{ File Management related plugins
 " We'll install NERDTree for file exploring
 	" NERD Tree - tree explorer
 " https://github.com/scrooloose/nerdtree
@@ -397,7 +397,7 @@ if g:is_linux
   Plug 'ojroques/vim-oscyank'
 endif
 
-" foldable extensible 40-column cheat sheet 
+" foldable extensible 40-column cheat sheet
 Plug 'lifepillar/vim-cheat40'
 call plug#end()
 "}}
@@ -571,7 +571,7 @@ let g:UltiSnipsSnippetDirectories=['UltiSnips', 'my_snippets']
 "}}
 
 
-"{{ File Management related plugins 
+"{{ File Management related plugins
 " We'll configure NERDTree for file exploring
 " This is the default extra key bindings
 
@@ -795,7 +795,7 @@ nnoremap <silent> <Space>t :<C-U>Vista!!<CR>
 function! Comment()
   if (mode() == "n" )
     execute "Commentary"
-  else    
+  else
     execute "'<,'>Commentary"
   endif
  endfunction
@@ -1092,7 +1092,7 @@ let g:UltiSnipsExpandTrigger="<C-J>"
 " date and exact time: datetime
 " date in ISO format: diso
 " Often times, you will find you want to more snippets to cover your use cases. For example, I have set up a snippet meta which can generate the Markdown front matter fore me, see here for more details.
-" 
+"
 " For how to set up Ultisnips and writing your own snippets, see this post.
 " https://jdhao.github.io/2019/04/17/neovim_snippet_s1/
 
@@ -1103,7 +1103,7 @@ autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 " when you turn on/off goyo, limelight will also be turn on/off.
 
-# Markdown syntax highlighting
+" Markdown syntax highlighting
 " Vim-markdown provides a lot of functionalities such as folding, conceal etc. Here, we mainly use its syntax highlighting feature. Below are some settings for vim-markdown:
 " disable header folding
 let g:vim_markdown_folding_disabled = 1
@@ -1126,10 +1126,10 @@ let g:vim_markdown_json_frontmatter = 1  " for JSON format
 "   TableFormat: format the table under current cursor
 " For more settings about these plugins, please consult their documentations.
 
-" Another good Markdown syntax plugin I recommend is vim-pandoc-syntax. 
-" It provides more syntax highlight and better conceal features. 
+" Another good Markdown syntax plugin I recommend is vim-pandoc-syntax.
+" It provides more syntax highlight and better conceal features.
 
-" It is designed to work with vim-pandoc. To use it as a standalone plugin, 
+" It is designed to work with vim-pandoc. To use it as a standalone plugin,
 " we should add the following settings in our Neovim configuration file:
 augroup pandoc_syntax
     au! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
@@ -1138,11 +1138,11 @@ augroup END
 " Markdown previewing
 " do not close the preview tab when switching to other buffers
 let g:mkdp_auto_close = 0
-" To start previewing a markdown file, use MarkdowPreview command. 
-" Your default browser will be opened automatically. 
+" To start previewing a markdown file, use MarkdowPreview command.
+" Your default browser will be opened automatically.
 " You can also add a custom key mapping for this command:
 nnoremap <M-m> :MarkdownPreview<CR>
-" For other custom settings, see its documentation. 
+" For other custom settings, see its documentation.
 "    https://github.com/iamcco/markdown-preview.nvim#install--usage
 "}}
 
