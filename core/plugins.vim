@@ -70,7 +70,7 @@ if executable('sbcl')
   Plug 'vlime/vlime', {'rtp': 'vim/', 'for': 'lisp'}
 endif
 
-" C++ semantic highlighting/
+" C++ semantic highlighting
 if executable('ccls')
   Plug 'jackguo380/vim-lsp-cxx-highlight'
 endif
@@ -178,7 +178,8 @@ Plug 'honza/vim-snippets'
 
 " Automatic insertion and deletion of a pair of characters
 Plug 'jiangmiao/auto-pairs'
- Plug 'alvan/vim-closetag'
+Plug 'alvan/vim-closetag'
+
 " Comment plugin
 Plug 'tpope/vim-commentary'
 
