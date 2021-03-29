@@ -261,8 +261,6 @@ set termguicolors         " Required for some themes
 set foldlevel=1           " Better for markdown and PHP classes
 set hidden
 
-colorscheme base16-default-dark
-
 " filetype plugin indent on " Enable file type detection.
 let &t_EI = "\e[2 q"      " Make cursor a line in insert on Vim
 let &t_SI = "\e[6 q"      " Make cursor a line in insert on Vim
